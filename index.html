@@ -1,0 +1,44 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>qVideo - Audio Video capture in Qualtrics</title>
+  <meta name="description" content="Audio Video capture in Qualtrics">
+  <meta name="author" content="Gabe Mansur">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+
+  <video autoplay></video>
+
+<script>
+const constraints = {
+  video: true,
+  audio: true,
+};
+
+const video = document.querySelector('video');
+
+function handleSuccess(stream) {
+  video.srcObject = stream;
+}
+
+function handleError(error) {
+  console.error('Rejected!', error);
+}
+
+navigator.mediaDevices.getUserMedia(constraints).
+  then(handleSuccess).catch(handleError);
+</script>
+
+  <script src="js/qVideo.js"></script>
+</body>
+</html>
