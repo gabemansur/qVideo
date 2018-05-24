@@ -1,0 +1,3 @@
+MAMP SSL:
+https://gist.github.com/jfloff/5138826
+
