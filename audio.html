@@ -21,18 +21,18 @@
 <body>
 
   <div id="error"></div>
-  <video autoplay></video>
   <br>
   <button id="record">Record</button>
   <button id="stop">Stop</button>
 
 <script>
 
-const u_id = '1234ABCDE'; // This will be pulled from Qualrtics (or possibly some other source)
+const u_id = 'AUD1234'; // This will be pulled from Qualrtics (or possibly some other source)
 
 $(document).ready(function(){
 
-  qVideo = new QVideo(document.querySelector('video'), u_id, null);
+  qVideo = new QVideo(null, u_id, null);
+  qVideo.setConstraints({audio: true, video: false});
 
   if(!qVideo.hasGetUserMedia()) {
     $("#error").html('VIDEO RECORDING IS NOT SUPPORTED');
