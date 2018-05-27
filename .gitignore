@@ -1,4 +1,3 @@
 /uploads
 env.php
-dbxapp-info.json
-token
+credentials/

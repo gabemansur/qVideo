@@ -1,5 +1,5 @@
 <?php
-require('dbx.php');
+require('driveup.php');
 /* FOR MULTIPLE MEDIA FILES
 foreach(array('video', 'audio') as $type) {
     if (isset($_FILES["${type}-blob"])) {
@@ -33,7 +33,7 @@ $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
 
             if ($didUpload) {
                 echo "The file " . basename($fileName) . " has been uploaded";
-                moveToDBX($uploadPath);
+                uploadToDrive($uploadPath);
             } else {
                 echo "An error occurred somewhere. Try again or contact the admin";
             }

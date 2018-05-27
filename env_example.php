@@ -1,4 +1,5 @@
 <?php
-  define('DBX_APP_KEY', 'KEY');
-  define('DBX_APP_SECRET', 'SECRET');
+  define('GOOGLE_USER', '');
+  define('GOOGLE_PASS', '');
+  define('API_KEY', '');
 ?>
