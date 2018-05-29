@@ -1,0 +1,15 @@
+.qvideo-msg {
+  font-family: sans-serif;
+  font-size: 18px;
+  text-align: center;
+  width: auto;
+  padding: 4px;
+}
+
+.qvideo-error {
+  background-color: #ff6666;
+}
+
+.qvideo-success {
+  background-color: #00ff00;
+}

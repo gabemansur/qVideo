@@ -25,16 +25,18 @@ $fileName = $_FILES['media']['name'];
 $fileSize = $_FILES['media']['size'];
 $fileTmpName  = $_FILES['media']['tmp_name'];
 $fileType = $_FILES['media']['type'];
-$fileExtension = strtolower(end(explode('.',$fileName)));
 
 $uploadPath = $currentDir . $uploadDirectory . $_POST['u'] .'_' . uniqid() .'.webm';
 
 $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
 
             if ($didUpload) {
-                echo "The file " . basename($fileName) . " has been uploaded";
-                uploadToDrive($uploadPath);
+                $result = uploadToDrive($uploadPath);
+                if($result['name'] == basename($uploadPath)) {
+                  unlink($uploadPath);
+                }
+                else echo 'Error saving file to server';
             } else {
-                echo "An error occurred somewhere. Try again or contact the admin";
+                echo 'Error uploading file';
             }
 ?>

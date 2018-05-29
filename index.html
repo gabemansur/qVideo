@@ -12,7 +12,7 @@
           crossorigin="anonymous"></script>
 
   <script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
-
+  <link rel="stylesheet" type="text/css" href="css/qVideoStyle.css"></link>
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
@@ -20,7 +20,7 @@
 
 <body>
 
-  <div id="error"></div>
+  <div id="msg" class="qvideo-msg qvideo-success">Success - everything went great!</div>
   <video autoplay></video>
   <br>
   <button id="record">Record</button>
@@ -35,7 +35,7 @@ $(document).ready(function(){
   qVideo = new QVideo(document.querySelector('video'), u_id, null);
 
   if(!qVideo.hasGetUserMedia()) {
-    $("#error").html('VIDEO RECORDING IS NOT SUPPORTED');
+    $("#msg").html('VIDEO RECORDING IS NOT SUPPORTED');
   }
 
   $("#record").on('click', function(event) {
