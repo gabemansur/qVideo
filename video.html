@@ -10,30 +10,35 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
           integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
           crossorigin="anonymous"></script>
+
+  <script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
   <link rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
         crossorigin="anonymous">
-  <script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
-
+  <link rel="stylesheet" type="text/css" href="css/qVideoStyle.css"></link>
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 </head>
-
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 offset-md-4">
-        <div id="msg"></div>
-        <br>
-        <div class="text-center">
-          <button class="btn btn-lg btn-danger mr-lg-4" id="record">RECORD</button>
-          <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 video-container">
+          <div class="alert alert-success" id="msg" role="alert"></div>
+          <div class="alert alert-danger" id="err" role="alert"></div>
+          <video poster="img/poster.png" autoplay></video>
+          <br>
+          <div class="text-center">
+            <button class="btn btn-lg btn-danger mr-lg-4" id="record">RECORD</button>
+            <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
 <script>
 
   const params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
@@ -41,11 +46,13 @@
 
   $(document).ready(function(){
 
-    qVideo = new QVideo(null, u_id, null);
-    qVideo.setConstraints({audio: true, video: false});
+    $("#err").hide();
+    $("#msg").hide();
+
+    qVideo = new QVideo(document.querySelector('video'), u_id, null);
 
     if(!qVideo.hasGetUserMedia()) {
-      $("#error").html('AUDIO RECORDING IS NOT SUPPORTED');
+      $("#msg").html('VIDEO RECORDING IS NOT SUPPORTED');
     }
 
     $("#record").on('click', function(event) {
@@ -57,8 +64,6 @@
     });
 
   });
-
-
 </script>
 
   <script src="js/qVideo.js"></script>

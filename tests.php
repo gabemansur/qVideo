@@ -5,7 +5,8 @@ ini_set('display_errors', 1);
 require('driveup.php');
 
 function runUploadTest() {
-  $filePath = '/Applications/MAMP/htdocs/qVideo/uploads/blob_copy.mp4';
+
+  $filePath = getcwd().'/uploads/testblob.webm';
   $r = uploadToDrive($filePath);
   echo '<pre>';
   print_r($r);
