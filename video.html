@@ -29,11 +29,17 @@
         <div class="col-md-6 offset-md-3 video-container">
           <div class="alert alert-success" id="msg" role="alert"></div>
           <div class="alert alert-danger" id="err" role="alert"></div>
-          <video poster="img/poster.png" autoplay></video>
+          <h4 class="text-center text-primary" id="review-msg">
+            You can review your video. If you are happy with it,
+            click "Upload". Otherwise, click "Record" to record another one.
+          </h4>
+          <video id="recorder" poster="img/poster.png" autoplay></video>
+          <video id="playback" controls></video>
           <br>
-          <div class="text-center">
-            <button class="btn btn-lg btn-danger mr-lg-4" id="record">RECORD</button>
+          <div class="text-center buttons">
+            <button class="btn btn-lg btn-danger" id="record">RECORD</button>
             <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
+            <button class="btn btn-lg btn-success" id="upload">UPLOAD</button>
           </div>
         </div>
       </div>
@@ -43,24 +49,63 @@
 
   const params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
   const u_id = params.id; // This will be pulled from Qualrtics (or possibly some other source)
+  const review = params.review;
 
   $(document).ready(function(){
 
     $("#err").hide();
     $("#msg").hide();
+    $("#review-msg").hide();
+    $("#stop").hide();
+    $("#upload").hide();
+    $("#playback").hide();
 
-    qVideo = new QVideo(document.querySelector('video'), u_id, null);
+    const allowReview = (review == 'true') ? true : false;
+
+    if(!allowReview) $("#upload").hide();
+
+    qVideo = new QVideo(document.querySelectorAll('video')[0], document.querySelectorAll('video')[1], u_id, null, allowReview);
 
     if(!qVideo.hasGetUserMedia()) {
       $("#msg").html('VIDEO RECORDING IS NOT SUPPORTED');
     }
 
     $("#record").on('click', function(event) {
+      $("#review-msg").hide();
+      $("#recorder").show();
+      $("#record").hide();
+      $("#upload").hide();
+      $("#stop").show();
+      $("#playback").hide();
       qVideo.startRecording();
     });
 
     $("#stop").on('click', function(event) {
+      $("#recorder").hide();
+      $("#stop").hide();
+      if(allowReview) {
+        $("#playback").show();
+        $("#review-msg").show();
+        $("#record").show();
+        $("#upload").show();
+      }
+      else {
+        $("#recorder").hide();
+        $("#playback").hide();
+        $(".buttons").hide();
+        $("#msg").html('Your video has been uploaded.');
+        $("#msg").show();
+      }
       qVideo.stopRecording();
+    });
+
+    $("#upload").on('click', function(event) {
+      qVideo.uploadMedia();
+      $("#recorder").hide();
+      $("#playback").hide();
+      $(".buttons").hide();
+      $("#msg").html('Your video has been uploaded.');
+      $("#msg").show();
     });
 
   });

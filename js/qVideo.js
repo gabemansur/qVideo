@@ -1,6 +1,6 @@
 class QVideo {
 
-  constructor(video, u_id, qInstance) {
+  constructor(video, playback, u_id, qInstance, allowReview) {
     // Set default constraints
     this.constraints = {
       video: true,
@@ -18,6 +18,11 @@ class QVideo {
 
     // The video HTML element
     this.video = video;
+
+    this.playback = playback;
+
+    // Whether user can review their recorded video or not
+    this.allowReview = allowReview;
 
     // Reference to the Qualtrics object, in case we want to call Qualtrics functions from this class
     this.q = qInstance;
@@ -53,7 +58,6 @@ class QVideo {
 
   startRecording() {
     var self = this; // so we have a reference to our QVideo instance in the callback
-    console.log(this.options);
     navigator.mediaDevices.getUserMedia(this.constraints)
       .then(function(stream) {
         self.handleSuccess(stream)
@@ -85,16 +89,35 @@ class QVideo {
 
   stopRecording() {
     var self = this; // so we have a reference to our QVideo instance
+
+    // We shut off the cam/mic here
     if (this.stream!= null) {
       this.stream.getTracks().map(function (val) {
       val.stop();
       });
     }
-    this.recordRTC.stopRecording(function() {
-        // Ideally, we would shut off the web cam here
-        self.recordedBlob = self.recordRTC.getBlob();
-        self.uploadMedia();
-      });
+
+    if(!this.allowReview) {
+      this.recordRTC.stopRecording(function() {
+          self.recordedBlob = self.recordRTC.getBlob();
+          self.uploadMedia();
+        });
+    }
+
+    else {
+      this.recordRTC.stopRecording(function() {
+          self.recordedBlob = self.recordRTC.getBlob();
+          self.setPlayback();
+        });
+    }
+  }
+
+  setPlayback() {
+    var URL = window.URL || window.webkitURL;
+    var url = URL.createObjectURL(this.recordedBlob);
+    console.log(this.playback);
+    console.log(this.recordedBlob);
+    this.playback.src = url;
   }
 
   uploadMedia() {
@@ -126,6 +149,6 @@ class QVideo {
       $("#err").html('There was an error uploading the file!');
       $("#err").show();
     }
-    $("video").hide();
+    //$("video").hide();
   }
 }
