@@ -1,4 +1,10 @@
-/uploads
+/uploads/*
 env.php
 credentials/
 vendor/
+logs/*
+
+
+# exception to the rule so we upload the folders
+!logs/.gitkeep
+!/uploads/.gitkeep
