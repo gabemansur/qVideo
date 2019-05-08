@@ -3,6 +3,14 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 require('driveup.php');
+require('logger.php');
+
+function loggerTest() {
+  print 'RUNNING LOG TEST...<br>';
+  $log = new Log();
+  $log->write('Writing a test line to log.');
+  
+}
 
 function runUploadTest() {
   print 'RUNNING UPLOAD TO DRIVE TEST...<br>';
@@ -23,7 +31,6 @@ function canWriteTest() {
   print 'RUNNING CAN WRITE TO UPLOAD FOLDER TEST...<br>';
   $url = $filePath = getcwd().'/uploads';
   if (!is_writable($url)) {
-
         try {
             chmod($url, 0644);
         } catch (Exception $e) {
@@ -39,4 +46,5 @@ function canWriteTest() {
 
 // Tests to run
 canWriteTest();
+loggerTest();
 runUploadTest();
