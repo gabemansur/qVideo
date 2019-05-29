@@ -81,6 +81,7 @@
   const recordedChunks = [];
   const mediaRecorder = new MediaRecorder(stream, options);
 
+  playback.muted = true;
   playback.srcObject = stream;
 
   mediaRecorder.ondataavailable = function(e) {
@@ -134,6 +135,7 @@
    */
   function processVideo() {
     if(review) {
+      $("#stop").hide();
       $("#playback").show();
       $("#review-msg").show();
       $("#record").show();
