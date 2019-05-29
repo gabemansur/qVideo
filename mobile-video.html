@@ -65,7 +65,7 @@
   const recordedChunks = [];
   const mediaRecorder = new MediaRecorder(stream, options);
 
-  mediaRecorder.addEventListener('dataavailable', function(e) {
+  mediaRecorder.ondataavailable = function(e) {
     if (e.data.size > 0) {
       recordedChunks.push(e.data);
     }
@@ -78,7 +78,7 @@
       mediaRecorder.stop();
       stopped = true;
     }
-  });
+  };
 
   mediaRecorder.addEventListener('stop', function() {
     console.log('stopped and downloading...');
