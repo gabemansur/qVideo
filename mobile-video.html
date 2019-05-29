@@ -65,6 +65,8 @@
   const recordedChunks = [];
   const mediaRecorder = new MediaRecorder(stream, options);
 
+  console.log(mediaRecorder);
+
   mediaRecorder.ondataavailable = function(e) {
     if (e.data.size > 0) {
       recordedChunks.push(e.data);
