@@ -26,18 +26,18 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 offset-md-3 video-container">
+          <div class="alert alert-success" id="msg" role="alert"></div>
+          <div class="alert alert-danger" id="err" role="alert"></div>
           <h4 class="text-center text-primary" id="review-msg">
             You can review your video. If you are happy with it,
             click "Upload". Otherwise, click "Record" to record another one.
           </h4>
-          <a id="download">Download</a>
-          <button id="stop">Stop</button>
-          <!--
-          <label class="btn btn-danger btn-file">
-            Record <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
-          </label>
-          <video id="player" controls></video>
-          -->
+          <video id="playback" controls></video>
+          <div class="text-center buttons">
+            <button class="btn btn-lg btn-danger" id="record">RECORD</button>
+            <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
+            <button class="btn btn-lg btn-success" id="upload">UPLOAD</button>
+          </div>
         </div>
       </div>
     </div>
@@ -50,8 +50,11 @@
 
   let shouldStop = false;
   let stopped = false;
+  let recordedBlob = null;
   const downloadLink = document.getElementById('download');
   const stopButton = document.getElementById('stop');
+
+  var playback = document.getElementById('playback');
 
   stopButton.addEventListener('click', function() {
     console.log('stop button clicked');
@@ -65,17 +68,15 @@
   const recordedChunks = [];
   const mediaRecorder = new MediaRecorder(stream, options);
 
-  console.log('MR shouldStop: ' + shouldStop);
-  console.log('MR stopped: ' + stopped);
+  playback.srcObject = stream;
 
   mediaRecorder.ondataavailable = function(e) {
-    console.log(e);
+
     if (e.data.size > 0) {
       recordedChunks.push(e.data);
     }
 
     if(shouldStop === true && stopped === false) {
-      console.log('stopping...');
       mediaRecorder.stop();
       stopped = true;
     }
@@ -87,17 +88,82 @@
   };
 
   mediaRecorder.addEventListener('stop', function() {
-    console.log('stopped and downloading...');
-    downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
-    downloadLink.download = 'acetest.webm';
+    recordedBlob = new Blob(recordedChunks);
+    processVideo();
+    //downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
+    //downloadLink.download = 'acetest.webm';
   });
 
   mediaRecorder.start(100);
   };
 
 
-  navigator.mediaDevices.getUserMedia({ audio: false, video: true })
+  initializePage();
+  navigator.mediaDevices.getUserMedia({ audio: true, video: true })
     .then(handleSuccess);
+
+
+  /*
+    Prepares the page for recording, by hiding unneeded controls
+   */
+  function initializePage() {
+    $("#err").hide();
+    $("#msg").hide();
+    $("#review-msg").hide();
+    $("#stop").hide();
+    $("#upload").hide();
+    $("#playback").hide();
+  };
+
+  /*
+    Displays video for review, or if review is off, uploads the video
+   */
+  function processVideo() {
+    if(review) {
+      $("#playback").show();
+      $("#review-msg").show();
+      $("#record").show();
+      $("#upload").show();
+      playback.src = URL.createObjectURL(recordedBlob);
+    }
+    else {
+      $("#recorder").hide();
+      $("#playback").hide();
+      $(".buttons").hide();
+      upload();
+    }
+  };
+
+  function upload() {
+    let fd = new FormData();
+    fd.append('u', u_id);
+    fd.append('media', recordedBlob);
+    $.ajax({
+        type: 'POST',
+        url: uploadUrl,
+        data: fd,
+        processData: false,
+        contentType: false})
+        .done(function(data) {
+           handleUploadResult(data);
+    });
+  };
+
+  function  handleUploadResult(result) {
+      if(result == 'Success'){
+        $("#msg").html('Video uploaded successfully!');
+        $("#msg").show();
+      }
+      else if(result == 'Error saving file to server') {
+        $("#err").html('There was an error saving the file!');
+        $("#err").show();
+      }
+      else if(result == 'Error uploading file') {
+        $("#err").html('There was an error uploading the file!');
+        $("#err").show();
+      }
+      //$("video").hide();
+    }
 
 </script>
 
