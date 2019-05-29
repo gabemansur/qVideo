@@ -65,15 +65,14 @@
   const recordedChunks = [];
   const mediaRecorder = new MediaRecorder(stream, options);
 
-  console.log(mediaRecorder);
+  console.log('MR shouldStop: ' + shouldStop);
+  console.log('MR stopped: ' + stopped);
 
   mediaRecorder.ondataavailable = function(e) {
+    console.log(e);
     if (e.data.size > 0) {
       recordedChunks.push(e.data);
     }
-
-    console.log('MR shouldStop: ' + shouldStop);
-    console.log('MR stopped: ' + stopped);
 
     if(shouldStop === true && stopped === false) {
       console.log('stopping...');
