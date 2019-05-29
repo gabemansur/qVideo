@@ -44,6 +44,7 @@
 
 
 <script>
+  const uploadUrl = 'upload.php';
   const params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
   const u_id = params.id; // This will be pulled from Qualrtics (or possibly some other source)
   const review = params.review;
