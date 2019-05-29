@@ -32,8 +32,8 @@
             You can review your video. If you are happy with it,
             click "Upload". Otherwise, click "Record" to record another one.
           </h4>
-          <a id="download">Download
-          <button id="stop">Stop
+          <a id="download">Download</a>
+          <button id="stop">Stop</button>
           <!--
           <label class="btn btn-danger btn-file">
             Record <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
@@ -67,12 +67,14 @@
     }
 
     if(shouldStop === true && stopped === false) {
+      console.log('stopping...');
       mediaRecorder.stop();
       stopped = true;
     }
   });
 
   mediaRecorder.addEventListener('stop', function() {
+    console.log('stopped and downloading...');
     downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
     downloadLink.download = 'acetest.webm';
   });
