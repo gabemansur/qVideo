@@ -51,16 +51,29 @@
   let shouldStop = false;
   let stopped = false;
   let recordedBlob = null;
-  const downloadLink = document.getElementById('download');
+  const recordButton = document.getElementById('record');
   const stopButton = document.getElementById('stop');
+  const uploadButton = document.getElementById('upload');
 
   var playback = document.getElementById('playback');
 
   stopButton.addEventListener('click', function() {
-    console.log('stop button clicked');
     shouldStop = true;
-    console.log('shouldStop: ' + shouldStop);
-  })
+  });
+
+  recordButton.addEventListener('click', function() {
+
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then(handleSuccess);
+
+    recordButton.style.display = 'none';
+    stopButton.style.display = '';
+    playback.style.display = '';
+  });
+
+  uploadButton.addEventListener('click', function() {
+    upload();
+  });
 
   var handleSuccess = function(stream) {
 
@@ -99,9 +112,10 @@
 
 
   initializePage();
+  /*
   navigator.mediaDevices.getUserMedia({ audio: true, video: true })
     .then(handleSuccess);
-
+  */
 
   /*
     Prepares the page for recording, by hiding unneeded controls
