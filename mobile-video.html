@@ -26,8 +26,6 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 offset-md-3 video-container">
-          <div class="alert alert-success" id="msg" role="alert"></div>
-          <div class="alert alert-danger" id="err" role="alert"></div>
           <h4 class="text-center text-primary" id="review-msg">
             You can review your video. If you are happy with it,
             click "Upload". Otherwise, click "Record" to record another one.
@@ -56,6 +54,7 @@
   const stopButton = document.getElementById('stop');
 
   stopButton.addEventListener('click', function() {
+    console.log('stop button clicked');
     shouldStop = true;
   })
 
