@@ -81,13 +81,18 @@
     }
   };
 
+  mediaRecorder.onerror = function(event) {
+    let error = event.error;
+    console.log(error);
+  };
+
   mediaRecorder.addEventListener('stop', function() {
     console.log('stopped and downloading...');
     downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
     downloadLink.download = 'acetest.webm';
   });
 
-  mediaRecorder.start();
+  mediaRecorder.start(100);
   };
 
 
