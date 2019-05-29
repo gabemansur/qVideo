@@ -57,9 +57,12 @@
   })
 
   var handleSuccess = function(stream) {
+
   const options = {mimeType: 'video/webm'};
   const recordedChunks = [];
   const mediaRecorder = new MediaRecorder(stream, options);
+
+  console.log(stream);
 
   mediaRecorder.addEventListener('dataavailable', function(e) {
     if (e.data.size > 0) {
@@ -88,7 +91,7 @@
 
 </script>
 
-  <script src="js/qVideo.js"></script>
+  <!-- <script src="js/qVideo.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
           integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
           crossorigin="anonymous"></script>
