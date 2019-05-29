@@ -70,6 +70,9 @@
       recordedChunks.push(e.data);
     }
 
+    console.log('MR shouldStop: ' + shouldStop);
+    console.log('MR stopped: ' + stopped);
+
     if(shouldStop === true && stopped === false) {
       console.log('stopping...');
       mediaRecorder.stop();
