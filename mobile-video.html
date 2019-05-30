@@ -33,11 +33,11 @@
           </h4>
           <video id="player" controls class="mb-4"></video>
           <div class="text-center buttons">
-            <label class="btn btn-lg btn-danger btn-file" style="margin-bottom: 0;" id="record">
+            <label class="btn btn-lg btn-danger btn-file mt-2" style="margin-bottom: 0;" id="record">
               OPEN CAMERA <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
             </label>
-            <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
-            <button class="btn btn-lg btn-success" id="upload">UPLOAD</button>
+            <button class="btn btn-lg btn-secondary mt-2" id="stop">STOP</button>
+            <button class="btn btn-lg btn-success mt-2" id="upload">UPLOAD</button>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@
 <script>
   const uploadUrl = 'upload.php';
   const params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
-  const u_id = params.id; // This will be pulled from Qualrtics (or possibly some other source)
+  const u_id = params.id; // This will be pulled from Qualtrics (or possibly some other source)
   const review = params.review;
 
   const recordButton = document.getElementById('record');
@@ -111,7 +111,6 @@
         processData: false,
         contentType: false})
         .done(function(data) {
-
            handleUploadResult(data);
     });
   };
@@ -135,7 +134,6 @@
         $("#err").html('There was an error uploading the file!');
         $("#err").show();
       }
-      //$("video").hide();
     }
 
 </script>
