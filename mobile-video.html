@@ -25,7 +25,7 @@
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-md-6 offset-md-3 video-container">
+        <div class="col-md-12 video-container">
           <div class="alert alert-success" id="msg" role="alert"></div>
           <div class="alert alert-danger" id="err" role="alert"></div>
           <h4 class="text-center text-primary" id="review-msg">
@@ -34,7 +34,7 @@
           </h4>
           <video id="player" controls class="mb-4"></video>
           <div class="text-center buttons">
-            <label class="btn btn-lg btn-danger btn-file" id="record">
+            <label class="btn btn-lg btn-danger btn-file" style="margin-bottom: 0;" id="record">
               OPEN CAMERA <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
             </label>
             <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
