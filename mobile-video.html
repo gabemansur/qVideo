@@ -32,10 +32,11 @@
             You can review your video. If you are happy with it,
             click "Upload". Otherwise, click "Record" to record another one.
           </h4>
-          <input type="file" accept="video/*" capture="camera" id="recorder">
           <video id="player" controls></video>
           <div class="text-center buttons">
-            <button class="btn btn-lg btn-danger" id="record">RECORD</button>
+            <label class="btn btn-danger btn-file" id="record">
+              RECORD <input type="file" accept="video/*" capture="camera" id="recorder" style="display: none;">
+            </label>
             <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
             <button class="btn btn-lg btn-success" id="upload">UPLOAD</button>
           </div>
