@@ -113,6 +113,7 @@
     let fd = new FormData();
     fd.append('u', u_id);
     fd.append('media', recorder.files);
+    console.log(recorder.files);
     $.ajax({
         type: 'POST',
         url: uploadUrl,
@@ -120,6 +121,7 @@
         processData: false,
         contentType: false})
         .done(function(data) {
+          console.log('data returned: ' + data);
            handleUploadResult(data);
     });
   };
