@@ -32,7 +32,8 @@
             You can review your video. If you are happy with it,
             click "Upload". Otherwise, click "Record" to record another one.
           </h4>
-          <video id="playback" controls></video>
+          <input type="file" accept="video/*" capture="camera" id="recorder">
+          <video id="player" controls></video>
           <div class="text-center buttons">
             <button class="btn btn-lg btn-danger" id="record">RECORD</button>
             <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
@@ -49,27 +50,27 @@
   const u_id = params.id; // This will be pulled from Qualrtics (or possibly some other source)
   const review = params.review;
 
-  let shouldStop = false;
-  let stopped = false;
-  let recordedBlob = null;
   const recordButton = document.getElementById('record');
   const stopButton = document.getElementById('stop');
   const uploadButton = document.getElementById('upload');
 
-  var playback = document.getElementById('playback');
+  var recorder = document.getElementById('recorder');
+  var player = document.getElementById('player');
+
+  recorder.addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    player.src = URL.createObjectURL(file);
+  });
 
   stopButton.addEventListener('click', function() {
-    shouldStop = true;
+    
   });
 
   recordButton.addEventListener('click', function() {
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-      .then(handleSuccess);
-
     recordButton.style.display = 'none';
     stopButton.style.display = '';
-    playback.style.display = '';
+    player.style.display = '';
   });
 
   uploadButton.addEventListener('click', function() {
@@ -78,46 +79,7 @@
 
   var handleSuccess = function(stream) {
 
-  const options = {mimeType: 'video/webm'};
-  const recordedChunks = [];
-  const mediaRecorder = new MediaRecorder(stream, options);
-
-  playback.muted = true;
-  playback.srcObject = stream;
-
-  mediaRecorder.ondataavailable = function(e) {
-
-    if (e.data.size > 0) {
-      recordedChunks.push(e.data);
-    }
-
-    if(shouldStop === true && stopped === false) {
-      mediaRecorder.stop();
-      stopped = true;
-    }
-  };
-
-  mediaRecorder.onerror = function(event) {
-    let error = event.error;
-    console.log(error);
-  };
-
-  mediaRecorder.addEventListener('stop', function() {
-    recordedBlob = new Blob(recordedChunks);
-    processVideo();
-    //downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
-    //downloadLink.download = 'acetest.webm';
-  });
-
-  mediaRecorder.start(100);
-  };
-
-
   initializePage();
-  /*
-  navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-    .then(handleSuccess);
-  */
 
   /*
     Prepares the page for recording, by hiding unneeded controls
@@ -128,7 +90,7 @@
     $("#review-msg").hide();
     $("#stop").hide();
     $("#upload").hide();
-    $("#playback").hide();
+    $("#player").hide();
   };
 
   /*
@@ -137,15 +99,15 @@
   function processVideo() {
     if(review) {
       $("#stop").hide();
-      $("#playback").show();
+      $("#player").show();
       $("#review-msg").show();
       $("#record").show();
       $("#upload").show();
-      playback.src = URL.createObjectURL(recordedBlob);
+      player.src = URL.createObjectURL(recordedBlob);
     }
     else {
       $("#recorder").hide();
-      $("#playback").hide();
+      $("#player").hide();
       $(".buttons").hide();
       upload();
     }
