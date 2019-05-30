@@ -38,14 +38,14 @@ $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
                 if($result['name'] == basename($uploadPath)) {
                   $log->write('Uploaded '.$uploadPath.' to Drive');
                   unlink($uploadPath);
-                  return 'Success';
+                  echo 'Success';
                 }
                 else {
                   $log->write('Error saving '.$uploadPath.' to Drive');
-                  return 'Error saving file to server';
+                  echo 'Error saving file to server';
                 }
             } else {
                 $log->write('Error uploading '.$uploadPath.' to server');
-                return 'Error uploading file';
+                echo 'Error uploading file';
             }
 ?>
