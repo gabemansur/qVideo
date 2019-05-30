@@ -112,8 +112,8 @@
     console.log('in upload');
     let fd = new FormData();
     fd.append('u', u_id);
-    fd.append('media', recorder.files);
-    console.log(recorder.files);
+    fd.append('media', recorder.files[0]);
+    console.log(fd.media);
     $.ajax({
         type: 'POST',
         url: uploadUrl,
