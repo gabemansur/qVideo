@@ -63,16 +63,11 @@
     player.src = URL.createObjectURL(file);
   });
 
-  stopButton.addEventListener('click', function() {
-
-  });
-
   recordButton.addEventListener('click', function() {
     displayPostRecord();
   });
 
   uploadButton.addEventListener('click', function() {
-    console.log('upload clicked');
     upload();
   });
 
@@ -109,11 +104,9 @@
   };
 
   function upload() {
-    console.log('in upload');
     let fd = new FormData();
     fd.append('u', u_id);
     fd.append('media', recorder.files[0]);
-    console.log(fd);
     $.ajax({
         type: 'POST',
         url: uploadUrl,
@@ -121,21 +114,27 @@
         processData: false,
         contentType: false})
         .done(function(data) {
-          console.log('data returned: ' + data);
+
            handleUploadResult(data);
     });
   };
 
   function  handleUploadResult(result) {
       if(result == 'Success'){
+        $("#review-msg").hide();
+        $("#recorder").hide();
+        $("#player").hide();
+        $(".buttons").hide();
         $("#msg").html('Video uploaded successfully!');
         $("#msg").show();
       }
       else if(result == 'Error saving file to server') {
+        $("#review-msg").hide();
         $("#err").html('There was an error saving the file!');
         $("#err").show();
       }
       else if(result == 'Error uploading file') {
+        $("#review-msg").hide();
         $("#err").html('There was an error uploading the file!');
         $("#err").show();
       }
