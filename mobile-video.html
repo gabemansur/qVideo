@@ -30,11 +30,11 @@
           <div class="alert alert-danger" id="err" role="alert"></div>
           <h4 class="text-center text-primary" id="review-msg">
             You can review your video. If you are happy with it,
-            click "Upload". Otherwise, click "Record" to record another one.
+            click "Upload". Otherwise, click "Open Camera" to record another one.
           </h4>
           <video id="player" controls class="mb-4"></video>
           <div class="text-center buttons">
-            <label class="btn btn-danger btn-file" id="record">
+            <label class="btn btn-lg btn-danger btn-file" id="record">
               OPEN CAMERA <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
             </label>
             <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
@@ -72,6 +72,7 @@
   });
 
   uploadButton.addEventListener('click', function() {
+    console.log('upload clicked');
     upload();
   });
 
@@ -108,6 +109,7 @@
   };
 
   function upload() {
+    console.log('in upload');
     let fd = new FormData();
     fd.append('u', u_id);
     fd.append('media', recorder.files);
