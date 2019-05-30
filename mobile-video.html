@@ -32,10 +32,10 @@
             You can review your video. If you are happy with it,
             click "Upload". Otherwise, click "Record" to record another one.
           </h4>
-          <video id="player" controls></video>
+          <video id="player" controls class="mb-4"></video>
           <div class="text-center buttons">
             <label class="btn btn-danger btn-file" id="record">
-              RECORD <input type="file" accept="video/*" capture="camera" id="recorder" style="display: none;">
+              OPEN CAMERA <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
             </label>
             <button class="btn btn-lg btn-secondary" id="stop">STOP</button>
             <button class="btn btn-lg btn-success" id="upload">UPLOAD</button>
@@ -68,10 +68,7 @@
   });
 
   recordButton.addEventListener('click', function() {
-
-    recordButton.style.display = 'none';
-    stopButton.style.display = '';
-    player.style.display = '';
+    displayPostRecord();
   });
 
   uploadButton.addEventListener('click', function() {
@@ -95,14 +92,12 @@
   /*
     Displays video for review, or if review is off, uploads the video
    */
-  function processVideo() {
+  function displayPostRecord() {
     if(review) {
-      $("#stop").hide();
       $("#player").show();
       $("#review-msg").show();
       $("#record").show();
       $("#upload").show();
-      player.src = URL.createObjectURL(recordedBlob);
     }
     else {
       $("#recorder").hide();
@@ -115,7 +110,7 @@
   function upload() {
     let fd = new FormData();
     fd.append('u', u_id);
-    fd.append('media', recordedBlob);
+    fd.append('media', recorder.files);
     $.ajax({
         type: 'POST',
         url: uploadUrl,
