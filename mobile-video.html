@@ -25,13 +25,13 @@
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-md-6 offset-md-3 video-container">
+        <div class="col-md-12 video-container" style="width:90%; margin: 0 auto;">
           <div class="alert alert-success" id="msg" role="alert"></div>
           <div class="alert alert-danger" id="err" role="alert"></div>
           <h4 class="text-center text-primary" id="review-msg">
-            You can review your video. If you are happy with it,
-            click "Upload". Otherwise, click "Record" to record another one.
+            If you are happy with your video, click "Upload".<br>Otherwise, click "Open Camera" to record another one.
           </h4>
+<<<<<<< HEAD
           <!--
           <label class="btn btn-danger btn-file">
             Record <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
@@ -40,16 +40,28 @@
           <a id="download">Download
           <button id="stop">Stop
           <video id="player" controls></video>
+=======
+          <video id="player" controls class="mb-4"></video>
+          <div class="text-center buttons">
+            <label class="btn btn-lg btn-danger btn-file mt-2" style="margin-bottom: 0;" id="record">
+              OPEN CAMERA <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
+            </label>
+            <button class="btn btn-lg btn-secondary mt-2" id="stop">STOP</button>
+            <button class="btn btn-lg btn-success mt-2" id="upload">UPLOAD</button>
+          </div>
+>>>>>>> 0e6e1cd82797064c14ac9355265b318a00c50702
         </div>
       </div>
     </div>
 
-<script>
 
+<script>
+  const uploadUrl = 'upload.php';
   const params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
-  const u_id = params.id; // This will be pulled from Qualrtics (or possibly some other source)
+  const u_id = params.id; // This will be pulled from Qualtrics (or possibly some other source)
   const review = params.review;
 
+<<<<<<< HEAD
   let shouldStop = false;
   let stopped = false;
   const downloadLink = document.getElementById('download');
@@ -90,9 +102,97 @@
   navigator.mediaDevices.getUserMedia({ audio: true, video: true })
       .then(handleSuccess);
 
+=======
+  const recordButton = document.getElementById('record');
+  const stopButton = document.getElementById('stop');
+  const uploadButton = document.getElementById('upload');
+
+  var recorder = document.getElementById('recorder');
+  var player = document.getElementById('player');
+
+  recorder.addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    player.src = URL.createObjectURL(file);
+  });
+
+  recordButton.addEventListener('click', function() {
+    displayPostRecord();
+  });
+
+  uploadButton.addEventListener('click', function() {
+    upload();
+  });
+
+  initializePage();
+
+  /*
+    Prepares the page for recording, by hiding unneeded controls
+   */
+  function initializePage() {
+    $("#err").hide();
+    $("#msg").hide();
+    $("#review-msg").hide();
+    $("#stop").hide();
+    $("#upload").hide();
+    $("#player").hide();
+  };
+
+  /*
+    Displays video for review, or if review is off, uploads the video
+   */
+  function displayPostRecord() {
+    if(review) {
+      $("#review-msg").show();
+      $("#record").show();
+      $("#upload").show();
+    }
+    else {
+      $("#recorder").hide();
+      $(".buttons").hide();
+      upload();
+    }
+  };
+
+  function upload() {
+    let fd = new FormData();
+    fd.append('u', u_id);
+    fd.append('media', recorder.files[0]);
+    $.ajax({
+        type: 'POST',
+        url: uploadUrl,
+        data: fd,
+        processData: false,
+        contentType: false})
+        .done(function(data) {
+           handleUploadResult(data);
+    });
+  };
+
+  function  handleUploadResult(result) {
+      if(result == 'Success'){
+        $("#review-msg").hide();
+        $("#recorder").hide();
+        $("#player").hide();
+        $(".buttons").hide();
+        $("#msg").html('Video uploaded successfully!');
+        $("#msg").show();
+      }
+      else if(result == 'Error saving file to server') {
+        $("#review-msg").hide();
+        $("#err").html('There was an error saving the file!');
+        $("#err").show();
+      }
+      else if(result == 'Error uploading file') {
+        $("#review-msg").hide();
+        $("#err").html('There was an error uploading the file!');
+        $("#err").show();
+      }
+    }
+
+>>>>>>> 0e6e1cd82797064c14ac9355265b318a00c50702
 </script>
 
-  <script src="js/qVideo.js"></script>
+  <!-- <script src="js/qVideo.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
           integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
           crossorigin="anonymous"></script>
