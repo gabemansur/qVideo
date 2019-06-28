@@ -46,6 +46,27 @@
       </div>
     </div>
 
+    <script>
+      var player = document.getElementById('player');
+
+      var handleSuccess = function(stream) {
+        player.srcObject = stream;
+      };
+
+      navigator.mediaDevices.enumerateDevices().then((devices) => {
+        console.log(devices);
+        navigator.mediaDevices.getUserMedia({ audio: true, video: {
+          deviceId: devices[0].deviceId
+        } })
+
+            .then(handleSuccess)
+            .catch(function(err) {
+              console.log(err);
+            });
+      });
+    </script>
+
+
 <script>
 
   const params={};location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){params[k]=v})
@@ -65,12 +86,12 @@
 
     if(!allowReview) $("#upload").hide();
 
-    qVideo = new QVideo(document.querySelectorAll('video')[0], document.querySelectorAll('video')[1], u_id, null, allowReview);
-
+  //  qVideo = new QVideo(document.querySelectorAll('video')[0], document.querySelectorAll('video')[1], u_id, null, allowReview);
+/*
     if(!qVideo.hasGetUserMedia()) {
       $("#msg").html('VIDEO RECORDING IS NOT SUPPORTED');
     }
-
+*/
     $("#record").on('click', function(event) {
       $("#review-msg").hide();
       $("#recorder").show();
