@@ -32,9 +32,13 @@
             You can review your video. If you are happy with it,
             click "Upload". Otherwise, click "Record" to record another one.
           </h4>
+          <!--
           <label class="btn btn-danger btn-file">
             Record <input type="file" accept="video/*" capture="user" id="recorder" style="display: none;">
           </label>
+        -->
+          <a id="download">Download
+          <button id="stop">Stop
           <video id="player" controls></video>
         </div>
       </div>
@@ -46,79 +50,46 @@
   const u_id = params.id; // This will be pulled from Qualrtics (or possibly some other source)
   const review = params.review;
 
-  $(document).ready(function(){
+  let shouldStop = false;
+  let stopped = false;
+  const downloadLink = document.getElementById('download');
+  const stopButton = document.getElementById('stop');
 
-    $("#err").hide();
-    $("#msg").hide();
-    $("#review-msg").hide();
-    $("#stop").hide();
-    $("#upload").hide();
-    $("#playback").hide();
-
-    const recorder = document.getElementById('recorder');
-    const player = document.getElementById('player');
-    const allowReview = (review == 'true') ? true : false;
-
-    recorder.addEventListener('change', function(e) {
-      let file = e.target.files[0];
-      let urlObj = URL.createObjectURL(file);
-      
-      // Do something with the video file.
-      if(allowReview) {
-        player.src = urlObj;
-      }
-
-    });
-
-
-
-    if(!allowReview) $("#upload").hide();
-
-    qVideo = new QVideo(document.querySelectorAll('video')[0], document.querySelectorAll('video')[1], u_id, null, allowReview);
-
-    if(!qVideo.hasGetUserMedia()) {
-      $("#msg").html('VIDEO RECORDING IS NOT SUPPORTED');
-    }
-
-    $("#record").on('click', function(event) {
-      $("#review-msg").hide();
-      $("#recorder").show();
-      $("#record").hide();
-      $("#upload").hide();
-      $("#stop").show();
-      $("#playback").hide();
-      qVideo.startRecording();
-    });
-
-    $("#stop").on('click', function(event) {
-      $("#recorder").hide();
-      $("#stop").hide();
-      if(allowReview) {
-        $("#playback").show();
-        $("#review-msg").show();
-        $("#record").show();
-        $("#upload").show();
-      }
-      else {
-        $("#recorder").hide();
-        $("#playback").hide();
-        $(".buttons").hide();
-        $("#msg").html('Your video has been uploaded.');
-        $("#msg").show();
-      }
-      qVideo.stopRecording();
-    });
-
-    $("#upload").on('click', function(event) {
-      qVideo.uploadMedia();
-      $("#recorder").hide();
-      $("#playback").hide();
-      $(".buttons").hide();
-      $("#msg").html('Your video has been uploaded.');
-      $("#msg").show();
-    });
-
+  stopButton.addEventListener('click', function() {
+    shouldStop = true;
   });
+
+  const recorder = document.getElementById('recorder');
+  const player = document.getElementById('player');
+  const allowReview = (review == 'true') ? true : false;
+
+  var handleSuccess = function(stream) {
+    const options = {mimeType: 'video/webm'};
+    const recordedChunks = [];
+    const mediaRecorder = new MediaRecorder(stream, options);
+
+    mediaRecorder.addEventListener('dataavailable', function(e) {
+      if (e.data.size > 0) {
+        recordedChunks.push(e.data);
+      }
+
+      if(shouldStop === true && stopped === false) {
+        mediaRecorder.stop();
+        stopped = true;
+      }
+    });
+
+    mediaRecorder.addEventListener('stop', function() {
+      downloadLink.href = URL.createObjectURL(new Blob(recordedChunks));
+      downloadLink.download = 'acetest.webm';
+    });
+
+    mediaRecorder.start();
+  };
+
+  navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then(handleSuccess);
+
 </script>
 
   <script src="js/qVideo.js"></script>
