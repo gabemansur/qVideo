@@ -7,6 +7,7 @@ class QVideo {
       audio: captureAudio,
     };
 
+
     this.options = {
       mimeType: 'video/webm', // or video/webm\;codecs=h264 or video/webm\;codecs=vp9
       audioBitsPerSecond: 128000,
@@ -58,6 +59,17 @@ class QVideo {
 
   startRecording() {
     var self = this; // so we have a reference to our QVideo instance in the callback
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+      console.log(devices);
+      navigator.mediaDevices.getUserMedia({ audio: captureAudio, video: {
+        deviceId: devices[0].deviceId
+      } })
+
+          .then(handleSuccess(stream))
+          .catch(function(err) {
+            console.log(err);
+          });
+          /*
     navigator.mediaDevices.getUserMedia(this.constraints)
       .then(function(stream) {
         self.handleSuccess(stream)
@@ -65,6 +77,7 @@ class QVideo {
       .catch(function(error) {
         self.handleError(error)
       });
+      */
   }
 
   handleSuccess(stream) {
