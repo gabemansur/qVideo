@@ -47,6 +47,7 @@
     </div>
 
     <script>
+    /*
       var player = document.getElementById('playback');
 
       var handleSuccess = function(stream) {
@@ -64,6 +65,7 @@
               console.log(err);
             });
       });
+      */
     </script>
 
 
@@ -86,12 +88,12 @@
 
     if(!allowReview) $("#upload").hide();
 
-  //  qVideo = new QVideo(document.querySelectorAll('video')[0], document.querySelectorAll('video')[1], u_id, null, allowReview);
-/*
+    qVideo = new QVideo(document.querySelectorAll('video')[0], document.querySelectorAll('video')[1], u_id, null, allowReview, false);
+
     if(!qVideo.hasGetUserMedia()) {
       $("#msg").html('VIDEO RECORDING IS NOT SUPPORTED');
     }
-*/
+
     $("#record").on('click', function(event) {
       $("#review-msg").hide();
       $("#recorder").show();
