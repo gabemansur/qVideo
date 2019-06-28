@@ -1,6 +1,6 @@
 class QVideo {
 
-  constructor(video, playback, u_id, qInstance, allowReview) {
+  constructor(video, playback, u_id, qInstance, allowReview, captureAudio) {
     // Set default constraints
     this.constraints = {
       video: true,

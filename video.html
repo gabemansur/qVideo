@@ -62,10 +62,11 @@
     $("#playback").hide();
 
     const allowReview = (review == 'true') ? true : false;
+    const captureAudio = (audio == 'true') ? true : false;
 
     if(!allowReview) $("#upload").hide();
 
-    qVideo = new QVideo(document.querySelectorAll('video')[0], document.querySelectorAll('video')[1], u_id, null, allowReview);
+    qVideo = new QVideo(document.querySelectorAll('video')[0], document.querySelectorAll('video')[1], u_id, null, allowReview, captureAudio);
 
     if(!qVideo.hasGetUserMedia()) {
       $("#msg").html('VIDEO RECORDING IS NOT SUPPORTED');
