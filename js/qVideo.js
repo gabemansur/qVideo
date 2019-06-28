@@ -4,7 +4,7 @@ class QVideo {
     // Set default constraints
     this.constraints = {
       video: true,
-      audio: true,
+      audio: captureAudio,
     };
 
     this.options = {
